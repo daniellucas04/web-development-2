@@ -1,0 +1,1 @@
+<?php echo pi() * $_POST['raio']**2; ?>

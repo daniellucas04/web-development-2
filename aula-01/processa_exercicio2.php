@@ -1,0 +1,1 @@
+<?php echo pi() * $_GET['raio']**2; ?>
