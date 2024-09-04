@@ -1,8 +1,6 @@
 <?php
-
 function jurosSimples($capital, $taxa, $tempo) {
     return number_format($capital * ($taxa/100) * $tempo, 2);
-    
 }
 
 function jurosCompostos($capital, $juros, $tempo) {
