@@ -21,16 +21,18 @@
         if(isset($_SESSION['aluno'])):
             $aluno = unserialize($_SESSION['aluno']);
         ?>
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h3 class="card-title text-center"><?= $aluno->getNome(); ?></h3>
-                <p class="card-text">
-                    <ul class="list-group">
-                        <li class="list-group-item">Data nascimento: <?= Aluno::formatDateBR($aluno->getDataNascimento()) ?></li>
-                        <li class="list-group-item">Matricula: <?= $aluno->getMatricula() ?></li>
-                        <li class="list-group-item">Curso: <?= $aluno->getCurso() ?></li>
-                    </ul>
-                </p>
+        <div class="col d-flex justify-content-center">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h3 class="card-title text-center"><?= $aluno->getNome(); ?></h3>
+                    <p class="card-text">
+                        <ul class="list-group">
+                            <li class="list-group-item">Data nascimento: <?= Aluno::formatDateBR($aluno->getDataNascimento()) ?></li>
+                            <li class="list-group-item">Matricula: <?= $aluno->getMatricula() ?></li>
+                            <li class="list-group-item">Curso: <?= $aluno->getCurso() ?></li>
+                        </ul>
+                    </p>
+                </div>
             </div>
         </div>
         <?php
