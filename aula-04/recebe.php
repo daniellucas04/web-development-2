@@ -55,7 +55,6 @@
                 <div class="modal-footer">
                     <button type="button" id="confirm" class="btn btn-primary">Confirmar</button>
                 </div>
-                </div>
             </div>
         </div>
     </div>
