@@ -7,6 +7,10 @@
     <title>Novo produto</title>
 </head>
 <body>
+    <?php 
+    $pgAtual = 'novo';
+    include 'menu.php';
+    ?>
     <div class="container mt-3">
         <form action="cria.php" method="post">
             <div class="row">

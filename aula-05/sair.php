@@ -14,4 +14,4 @@ if (ini_get("session.use_cookies")) {
 
 // Por último, destrói a sessão
 session_destroy();
-header('Location: mostra.php');
+header('Location: novo.php');

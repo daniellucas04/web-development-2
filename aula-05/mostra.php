@@ -7,16 +7,27 @@
     <title>Mostrar produtos</title>
 </head>
 <body>
-    <div class="container">
-        <?php 
-        include 'produto.php';
-        session_start();
+    <?php 
+    session_start();
+    if(empty($_SESSION['produto'])) {
+        header('Location: novo.php');
+    }
+    ?>
+    <?php 
+    $pgAtual = 'mostra';
+    include 'menu.php';
+    ?>
+    <div class="container mt-3">
+        <div class="row gap-4 d-flex align-items-center justify-content-center">
+            <?php
+            include 'produto.php';
 
-        foreach($_SESSION['produto'] as $produto) {
-            $produtoCadastrado = unserialize($produto);
-            echo $produtoCadastrado->nome . '<br>';
-        }
-        ?>
+            foreach($_SESSION['produto'] as $produto) {
+                $produtoCadastrado = unserialize($produto);
+                echo $produtoCadastrado->exibirInformacoes();
+            }
+            ?>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
