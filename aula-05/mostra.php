@@ -12,8 +12,7 @@
     if(empty($_SESSION['produto'])) {
         header('Location: novo.php');
     }
-    ?>
-    <?php 
+    
     $pgAtual = 'mostra';
     include 'menu.php';
     ?>
