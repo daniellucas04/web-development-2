@@ -19,6 +19,9 @@
 -- Table structure for table `livro`
 --
 
+CREATE DATABASE IF NOT EXISTS `livraria`;
+USE `livraria`;
+
 DROP TABLE IF EXISTS `livro`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
