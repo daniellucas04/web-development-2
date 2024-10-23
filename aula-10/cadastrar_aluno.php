@@ -25,7 +25,7 @@
                 if ($insert->execute(['nome' => $data['nome'], 'id_turma' => $data['id_turma']])) {
                     echo "<div class='alert alert-success text-center'>Aluno cadastrado com sucesso!</div>";
                 } else {
-                    echo "<div class='alert alert-danger text-center'>Erro ao cadastrar o aluno {$data['nome']}!</div>";
+                    echo "<div class='alert alert-danger text-center'>Erro ao cadastrar o aluno <strong>{$data['nome']}</strong>!</div>";
                 }
             } catch (PDOException $exception) {
                 echo $exception->getMessage();

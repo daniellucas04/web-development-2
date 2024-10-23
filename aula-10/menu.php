@@ -26,7 +26,7 @@
 						<li><a class="dropdown-item <?= ($pgAtual == 'cadastrar_aluno') ? 'active' : '' ?>" href="cadastrar_aluno.php">Cadastrar aluno</a></li>
 						<li><a class="dropdown-item <?= ($pgAtual == 'cadastrar_nota') ? 'active' : '' ?>" href="cadastrar_nota.php">Cadastrar nota</a></li>
 					</ul>
-				</li>			
+				</li>
 			</ul>
 		</div>
 	</div>

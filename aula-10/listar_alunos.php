@@ -23,25 +23,27 @@
                 $delete = $conn->prepare($sql);
                 $delete->execute(['id' => $data['id']]);
 
-                $sql = "DELETE FROM alunos WHERE id_aluno = :id";
+                $sql = "DELETE FROM alunos WHERE id = :id";
                 $delete = $conn->prepare($sql);
                 $delete->execute(['id' => $data['id']]);
 
                 if ($delete->rowCount() > 0) {
                     echo "<div class='alert alert-success text-center'>Aluno deletado com sucesso!</div>";
                 } else {
-                    echo "<div class='alert alert-danger text-center'>Aluno deletado com sucesso!</div>";
+                    echo "<div class='alert alert-danger text-center'>Erro ao deletar o aluno!</div>";
                 }
             } catch (PDOException $exception) {
                 echo $exception->getMessage();
             }
         }
         
-        $sql = "SELECT a.id, a.nome, t.nome as nome_turma, n.valor as nota FROM alunos AS a INNER JOIN turmas AS t ON a.id_turma = t.id INNER JOIN notas AS n ON a.id = n.id_aluno";
+        $sql = "SELECT a.id, a.nome, t.nome AS nome_turma FROM alunos AS a INNER JOIN turmas AS t ON a.id_turma = t.id ORDER BY a.nome ASC";
         $select = $conn->prepare($sql);
         $select->execute();
+        $counter = 0;
         ?>
-        <table class="table table-striped table-hover">
+        <h3 class="mb-3">Todos os alunos</h3>
+        <table class="table table-striped table-hover mb-4">
             <thead>
                 <tr>
                     <th>#</th>
@@ -52,14 +54,25 @@
                 </tr>
             </thead>
             <tbody>
-                <?php while($dados = $select->fetch(PDO::FETCH_ASSOC)): ?>
+                <?php while ($dados = $select->fetch(PDO::FETCH_ASSOC)): ?>
                     <tr>
-                        <td><?= $dados['id'] ?></td>
+                        <td><?= ++$counter ?></td>
                         <td><?= $dados['nome'] ?></td>
-                        <td><?= str_replace('.', ',', $dados['nota']) ?></td>
+                        <td>
+                            <?php 
+                            $sql = "SELECT valor FROM notas WHERE id_aluno = :id";
+                            $selectNotas = $conn->prepare($sql);
+                            $selectNotas->execute(['id' => $dados['id']]);
+
+                            while ($notas = $selectNotas->fetch(PDO::FETCH_ASSOC)) {
+                                $nota = str_replace('.', ',', $notas['valor']);
+                                echo "<span class='px-2'>{$nota}</span>";
+                            }
+                            ?>
+                        </td>
                         <td><?= $dados['nome_turma'] ?></td>
                         <td class="d-flex gap-1">
-                            <a class="btn btn-sm btn-primary" href="#">Editar</a>
+                            <a class="btn btn-sm btn-primary" href="editar_aluno.php?id=<?= $dados['id']; ?>">Editar</a>
                             <form method="post">
                                 <input type="hidden" name="id" value="<?= $dados['id'] ?>">
                                 <button class="btn btn-sm btn-danger">Excluir</button>

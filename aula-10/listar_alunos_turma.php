@@ -37,7 +37,7 @@
                             $sql = "SELECT id, nome FROM turmas";
                             $selectTurma = $conn->prepare($sql);
                             $selectTurma->execute();
-        
+
                             while ($linha = $selectTurma->fetch(PDO::FETCH_ASSOC)): ?>
                                 <option value="<?= $linha['id']; ?>" <?= (isset($data) AND $data['id_turma'] == $linha['id']) ? 'selected' : '' ?>> <?= $linha['nome'] ?> </option>
                             <?php endwhile;?>
@@ -50,6 +50,7 @@
             </form>
         </div>
         <?php 
+        $counter = 0;
         if(isset($data)):?>
             <table class="table table-striped table-hover">
                 <thead>
@@ -63,7 +64,7 @@
                 <tbody>
                     <?php while($dados = $select->fetch(PDO::FETCH_ASSOC)): ?>
                         <tr>
-                            <td><?= $dados['id'] ?></td>
+                            <td><?= ++$counter; ?></td>
                             <td><?= $dados['nome'] ?></td>
                             <td><?= $dados['nome_turma'] ?></td>
                             <td><?= str_replace('.', ',', $dados['nota']) ?></td>

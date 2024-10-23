@@ -18,9 +18,9 @@
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = filter_input_array(INPUT_POST, FILTER_DEFAULT);
             
-            $sql = "SELECT n.id, t.nome as nome_turma, n.valor as nota FROM notas AS n INNER JOIN turmas AS t ON n.id_turma = t.id WHERE n.id_aluno = :id_aluno ORDER BY n.valor DESC";
+            $sql = "SELECT n.id, t.nome AS nome_turma, a.nome AS nome_aluno, n.valor AS nota FROM notas AS n INNER JOIN turmas AS t ON n.id_turma = t.id INNER JOIN alunos AS a ON n.id_aluno = a.id WHERE n.id_aluno = :id_aluno ORDER BY n.valor DESC";
             $select = $conn->prepare($sql);
-            $select->execute(['id_aluno' => $data['id_aluno']]);    
+            $select->execute(['id_aluno' => $data['id_aluno']]);
         } else {
             $sql = "SELECT n.id, t.nome as nome_turma, n.valor as nota FROM notas AS n INNER JOIN turmas AS t ON n.id_turma = t.id ORDER BY n.valor DESC";
             $select = $conn->prepare($sql);
@@ -37,7 +37,7 @@
                             $sql = "SELECT id, nome FROM alunos";
                             $selectAluno = $conn->prepare($sql);
                             $selectAluno->execute();
-        
+
                             while ($linha = $selectAluno->fetch(PDO::FETCH_ASSOC)): ?>
                                 <option value="<?= $linha['id']; ?>" <?= (isset($data) AND $data['id_aluno'] == $linha['id']) ? 'selected' : '' ?>> <?= $linha['nome'] ?> </option>
                             <?php endwhile;?>
@@ -49,8 +49,15 @@
                 </div>
             </form>
         </div>
-        <?php 
-        if(isset($data)):?>
+        <?php
+        $counter = 0;
+        if (isset($data)): ?>
+            <?php 
+            $sql = "SELECT nome FROM alunos WHERE id = :id_aluno";
+            $selectNomeAluno = $conn->prepare($sql);
+            $selectNomeAluno->execute(['id_aluno' => $data['id_aluno']]);
+            ?>
+            <h1 class="mb-3">Todas as notas do aluno: <?= $selectNomeAluno->fetch(PDO::FETCH_ASSOC)['nome'] ?></h1>
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -62,7 +69,7 @@
                 <tbody>
                     <?php while($dados = $select->fetch(PDO::FETCH_ASSOC)): ?>
                         <tr>
-                            <td><?= $dados['id'] ?></td>
+                            <td><?= ++$counter ?></td>
                             <td><?= $dados['nome_turma'] ?></td>
                             <td><?= str_replace('.', ',', $dados['nota']) ?></td>
                         </tr>

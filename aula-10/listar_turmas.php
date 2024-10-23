@@ -41,8 +41,10 @@
         $sql = "SELECT id, nome FROM turmas";
         $select = $conn->prepare($sql);
         $select->execute();
+        $counter = 0;
         ?>
-        <table class="table table-striped table-hover">
+        <h3 class="mb-3">Todas as turmas</h3>
+        <table class="table table-striped table-hover mb-4">
             <thead>
                 <tr>
                     <th>#</th>
@@ -53,10 +55,10 @@
             <tbody>
                 <?php while($dados = $select->fetch(PDO::FETCH_ASSOC)): ?>
                     <tr>
-                        <td><?= $dados['id'] ?></td>
+                        <td><?= ++$counter ?></td>
                         <td><?= $dados['nome'] ?></td>
                         <td class="d-flex gap-1">
-                            <a class="btn btn-sm btn-primary" href="#">Editar</a>
+                            <a class="btn btn-sm btn-primary" href="editar_turma.php?id=<?= $dados['id'] ?>">Editar</a>
                             <form method="post">
                                 <input type="hidden" name="id" value="<?= $dados['id'] ?>">
                                 <button class="btn btn-sm btn-danger">Excluir</button>
@@ -66,7 +68,7 @@
                 <?php endwhile;?>
             </tbody>
         </table>
-
+        <small><span class="alert alert-warning">* Ao excluir a turma, seus alunos também serão excluídos!</span></small>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

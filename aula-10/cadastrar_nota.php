@@ -61,7 +61,7 @@
                         $select->execute();
                         $nomeAluno = $select->fetch()['nome'];
     
-                        echo "<div class='alert alert-danger text-center'>Erro ao cadastrar a nota do aluno {$nomeAluno}!</div>";
+                        echo "<div class='alert alert-danger text-center'>Erro ao cadastrar a nota do aluno <strong>{$nomeAluno}</strong>!</div>";
                     }
                 } catch (PDOException $exception) {
                     echo $exception->getMessage();
