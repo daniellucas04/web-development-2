@@ -20,10 +20,10 @@
         $error = false;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-
-            $sql = "SELECT id FROM paciente WHERE id_paciente = :id_paciente";
+            
+            $sql = "SELECT id FROM paciente WHERE id = :id";
             $select = $conn->prepare($sql);
-            $dados = $select->execute(['id_paciente' => $data['id_paciente']]);
+            $dados = $select->execute(['id' => $data['id_paciente']]);
             
             if (!$dados) {
                 echo "<div class='alert alert-danger'>Erro ao encontrar este paciente. <a href='cadastrar_paciente.php'>Cadastre ele aqui</a>!</div>";
@@ -32,13 +32,13 @@
 
             if (!$error) {
                 try {
-                    $sql = "INSERT INTO receita (id_paciente, nome_medicamento, dose) values (:id_paciente, :nome_medicamento, :dose)";
+                    $sql = "INSERT INTO administracao (id_receita, data_registro) VALUES (:id_receita, :data_registro)";
                     $insert = $conn->prepare($sql);
                     
-                    if ($insert->execute(['id_paciente' => $data['id_paciente'], 'nome_medicamento' => $data['nome_medicamento'], 'dose' => $data['dose']])) {
-                        echo "<div class='alert alert-success'>Receita cadastrada com sucesso!</div>";
+                    if ($insert->execute(['id_receita' => $id, 'data_registro' => $data['data_registro']])) {
+                        echo "<div class='alert alert-success'>Administração cadastrada com sucesso!</div>";
                     } else {
-                        echo "<div class='alert alert-danger'>Erro ao cadastrar a Receita!</div>";
+                        echo "<div class='alert alert-danger'>Erro ao cadastrar a administração!</div>";
                     }
                 } catch (PDOException $exception) {
                     echo $exception->getMessage();

@@ -20,9 +20,9 @@
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-            $sql = "SELECT id FROM paciente WHERE id_paciente = :id_paciente";
+            $sql = "SELECT id FROM paciente WHERE id = :id";
             $select = $conn->prepare($sql);
-            $dados = $select->execute(['id_paciente' => $data['id_paciente']]);
+            $dados = $select->execute(['id' => $data['id_paciente']]);
             
             if (!$dados) {
                 echo "<div class='alert alert-danger'>Erro ao encontrar este paciente. <a href='cadastrar_paciente.php'>Cadastre ele aqui</a>!</div>";
@@ -31,7 +31,7 @@
 
             if (!$error) {
                 try {
-                    $sql = "INSERT INTO receita (id_paciente, nome_medicamento, dose) values (:id_paciente, :nome_medicamento, :dose)";
+                    $sql = "INSERT INTO receita (id_paciente, nome_medicamento, dose) VALUES (:id_paciente, :nome_medicamento, :dose)";
                     $insert = $conn->prepare($sql);
                     
                     if ($insert->execute(['id_paciente' => $data['id_paciente'], 'nome_medicamento' => $data['nome_medicamento'], 'dose' => $data['dose']])) {
