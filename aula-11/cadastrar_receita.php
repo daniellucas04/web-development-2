@@ -8,79 +8,88 @@
 </head>
 <body>
     <?php 
-    session_start();
-    if ($_SESSION['tipo_usuario'] == 'medico' OR $_SESSION['tipo_usuario'] == 'enfermeiro') {
+    $pgAtual = 'cadastrar_receita';
+    include 'navbar.php';
+
+    if ($_SESSION['tipo_usuario'] == 'Médico') {
     ?>
-    <div class="container mt-5">
-        <h1>Cadastrar receita</h1>
-        <?php 
-        include "conexao.php";
+        <div class="container mt-5">
+            <h3>Cadastrar receita</h3>
+            <?php 
+            include "conexao.php";
 
-        $error = false;
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+            $error = false;
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $data = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-            $sql = "SELECT id FROM paciente WHERE id = :id";
-            $select = $conn->prepare($sql);
-            $dados = $select->execute(['id' => $data['id_paciente']]);
-            
-            if (!$dados) {
-                echo "<div class='alert alert-danger'>Erro ao encontrar este paciente. <a href='cadastrar_paciente.php'>Cadastre ele aqui</a>!</div>";
-                $error = true;
-            }
+                $sql = "SELECT id FROM paciente WHERE id = :id";
+                $select = $conn->prepare($sql);
+                $dados = $select->execute(['id' => $data['id_paciente']]);
+                
+                if (!$dados) {
+                    echo "<div class='alert alert-danger'>Erro ao encontrar este paciente. <a href='cadastrar_paciente.php'>Cadastre ele aqui</a>!</div>";
+                    $error = true;
+                }
 
-            if (!$error) {
-                try {
-                    $sql = "INSERT INTO receita (id_paciente, nome_medicamento, dose) VALUES (:id_paciente, :nome_medicamento, :dose)";
-                    $insert = $conn->prepare($sql);
-                    
-                    if ($insert->execute(['id_paciente' => $data['id_paciente'], 'nome_medicamento' => $data['nome_medicamento'], 'dose' => $data['dose']])) {
-                        echo "<div class='alert alert-success'>Receita cadastrada com sucesso!</div>";
-                    } else {
-                        echo "<div class='alert alert-danger'>Erro ao cadastrar a Receita!</div>";
+                if (!$error) {
+                    try {
+                        $sql = "INSERT INTO receita (id_paciente, nome_medicamento, dose, data_administracao) VALUES (:id_paciente, :nome_medicamento, :dose, :data_administracao)";
+                        $insert = $conn->prepare($sql);
+                        
+                        if ($insert->execute(['id_paciente' => $data['id_paciente'], 'nome_medicamento' => $data['nome_medicamento'], 'dose' => $data['dose'], 'data_administracao' => $data['data_administracao']])) {
+                            echo "<div class='alert alert-success'>Receita cadastrada com sucesso!</div>";
+                        } else {
+                            echo "<div class='alert alert-danger'>Erro ao cadastrar a Receita!</div>";
+                        }
+                    } catch (PDOException $exception) {
+                        echo $exception->getMessage();
                     }
-                } catch (PDOException $exception) {
-                    echo $exception->getMessage();
                 }
             }
-        }
-        ?>
-        <form method="post">
-            <div class="row">
-                <div class="col">
-                    <select class="form-select form-select-lg mt-2" name="id_paciente" required>
-                        <option selected disabled>Selecione um paciente</option>
-                        <?php
-                        $sql = "SELECT id, nome FROM paciente";
-                        $select = $conn->prepare($sql);
-                        $select->execute();
-    
-                        while ($linha = $select->fetch(PDO::FETCH_ASSOC)): ?>
-                            <option value="<?= $linha['id']; ?>"> <?= $linha['nome'] ?> </option>
-                        <?php endwhile;?>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-6">
-                    <div class="form-floating">
-                        <input required class="form-control" type="text" name="nome_medicamento" placeholder="Nome do medicamento" id="nome_medicamento">
-                        <label for="nome_medicamento">Nome do medicamento</label>
+            ?>
+            <form method="post">
+                <div class="row">
+                    <div class="col">
+                        <select class="form-select form-select-lg mt-2" name="id_paciente" required>
+                            <option selected disabled>Selecione um paciente</option>
+                            <?php
+                            $sql = "SELECT id, nome FROM paciente";
+                            $select = $conn->prepare($sql);
+                            $select->execute();
+        
+                            while ($linha = $select->fetch(PDO::FETCH_ASSOC)): ?>
+                                <option value="<?= $linha['id']; ?>"> <?= $linha['nome'] ?> </option>
+                            <?php endwhile;?>
+                        </select>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="form-floating">
-                        <input required class="form-control" type="text" name="dose" placeholder="Dose" id="dose">
-                        <label for="dose">Dose</label>
+                <div class="row mt-2">
+                    <div class="col-4">
+                        <div class="form-floating">
+                            <input required class="form-control" type="text" name="nome_medicamento" placeholder="Nome do medicamento" id="nome_medicamento">
+                            <label for="nome_medicamento">Nome do medicamento</label>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-floating">
+                            <input required class="form-control" type="text" name="dose" placeholder="Dose" id="dose">
+                            <label for="dose">Dose</label>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-floating">
+                            <input required class="form-control" type="datetime-local" name="data_administracao" placeholder="Data da administração" id="data_administracao">
+                            <label for="data_administracao">Data da administração</label>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <button class="btn btn-primary mt-2">Cadastrar</button>
-        </form>
-    </div>
+                <button class="btn btn-primary mt-2">Cadastrar</button>
+            </form>
+        </div>
     <?php 
     } else {
-      header('Location: login_medico.php');  
+        header('Location: login_medico.php');
+        exit;
     }
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

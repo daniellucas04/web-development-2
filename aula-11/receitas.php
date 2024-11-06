@@ -7,44 +7,32 @@
     <title>Listar receitas</title>
 </head>
 <body>
+    <?php
+    $pgAtual = 'receitas';
+    include 'navbar.php';
+    ?>
     <div class="container mt-5">
-        <?php 
+        <?php
         include 'conexao.php';
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        $sql = "SELECT r.id, p.nome, p.leito, r.data_administracao, r.status FROM receita AS r INNER JOIN paciente AS p ON r.id_paciente = p.id";
+        $select = $conn->prepare($sql);
+        $select->execute();
 
-            try {
-                $sql = "UPDATE receita SET status = 'T' WHERE id = :id";
-                $update = $conn->prepare($sql);
-                $update->execute(['id' => $data['id']]);
-
-                if ($update->rowCount() > 0) {
-                    echo "<div class='alert alert-success'>Receita finalizada com sucesso!</div>";
-                } else {
-                    echo "<div class='alert alert-success'>Erro ao finalizar a receita!</div>";
-                }
-            } catch (PDOException $exception) {
-                echo $exception->getMessage();
-            }
-        }
+        if ($select->rowCount() > 0):
         ?>
-        <h1>Listar receitas pendentes</h1>
-        <table class="table table-hover">
+        <h1>Listar receitas</h1>
+        <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
                     <th>Data</th>
                     <th>Leito</th>
                     <th>Estado</th>
-                    <th>Ação</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 <?php 
-                $sql = "SELECT r.id, p.nome, p.leito, r.data_administracao, r.status FROM receita AS r INNER JOIN paciente AS p ON r.id_paciente = p.id";
-                $select = $conn->prepare($sql);
-                $select->execute();
-
                 while ($linha = $select->fetch(PDO::FETCH_ASSOC)): ?>
                     <?php 
                     $dataFormatada = new DateTime($linha['data_administracao']);
@@ -55,15 +43,26 @@
                         <td><?= $dataFormatada->format('d/m/Y H:i:s'); ?></td>
                         <td><?= $linha['leito']; ?></td>
                         <td class="<?= $class; ?>"><strong><?= $status; ?></strong></td>
-                        <td class="row">
-                            <div class="col">
-                                <a class="btn btn-primary" href="cadastrar_administracao.php?id=<?= $linha['id']; ?>">Registrar administração</a>
-                            </div>
-                        </td>
+                        <?php if($_SESSION['tipo_usuario'] == 'Enfermeiro' AND $linha['status'] == 'F'){ ?>
+                            <td><a class="btn btn-primary" href="cadastrar_administracao.php?id=<?= $linha['id']; ?>">Registrar administração</a></td>
+                        <?php } else if ($linha['status'] == 'T') { ?>
+                            <?php 
+                            $sql = "SELECT data_registro FROM administracao WHERE id_receita = :id_receita LIMIT 1";
+                            $selectAdm = $conn->prepare($sql);
+                            $selectAdm->execute(['id_receita' => $linha['id']]);
+                            $dataRegistro = new DateTime($selectAdm->fetch(PDO::FETCH_ASSOC)['data_registro']);
+                            ?>
+                            <td><strong class="text-success">Data da administração: <?= $dataRegistro->format('d/m/Y H:i:s'); ?></strong></td>
+                        <?php } else { ?>
+                            <td><strong>Sem ações para realizar</strong></td>
+                        <?php } ?>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
+        <?php else: ?>
+            <h5 class="alert alert-info text-center">Não foram encontradas receitas</h5>
+        <?php endif; ?>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

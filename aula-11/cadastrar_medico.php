@@ -7,8 +7,14 @@
     <title>Cadastrar médico</title>
 </head>
 <body>
+    <?php
+    $pgAtual = 'cadastrar_medico';
+    include 'navbar.php';
+
+    if ($_SESSION['tipo_usuario'] == 'Admin') {
+    ?>
     <div class="container mt-5">
-        <h1>Cadastrar médico</h1>
+        <h3>Cadastrar médico</h3>
         <?php 
         include "conexao.php";
 
@@ -60,7 +66,7 @@
                 </div>
                 <div class="col-12 mt-2">
                     <div class="form-floating">
-                        <input required class="form-control" type="text" name="senha" placeholder="Senha" id="senha">
+                        <input required class="form-control" type="password" name="senha" placeholder="Senha" id="senha">
                         <label for="senha">Senha</label>
                     </div>
                 </div>
@@ -68,6 +74,11 @@
             <button class="btn btn-primary mt-2">Cadastrar</button>
         </form>
     </div>
+    <?php 
+    } else {
+        header('Location: login_medico.php');
+    }
+    ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
