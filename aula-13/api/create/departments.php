@@ -8,6 +8,7 @@ $table = 'departments';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
 
+    // Validações
     if (empty($data['name'])) { $msg .= "O campo <strong>Nome</strong> é obrigatório.<br>"; $error = true; }
 
     if (!$error) {

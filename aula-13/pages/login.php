@@ -6,7 +6,7 @@
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = filter_input_array(INPUT_POST, FILTER_DEFAULT);
             
-            $sql = "SELECT username, password FROM users WHERE email = :email";
+            $sql = "SELECT id, username, password FROM users WHERE email = :email";
             $select = $database->prepare($sql);
             $select->execute(['email' => $data['email']]);
             $userData = $select->fetch(PDO::FETCH_ASSOC);
@@ -14,6 +14,7 @@
             if (!empty($userData)) {
                 if (password_verify($data['password'], $userData['password'])) {
                     echo "<div class='alert alert-success'>Login efetuado com sucesso! Aguarde o redirecionamento...</div>";
+                    $_SESSION['id_user'] = $userData['id'];
                     $_SESSION['username'] = $userData['username'];
                     header('Location: inicio');
                 } else {

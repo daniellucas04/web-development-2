@@ -33,7 +33,7 @@
             </div>
             <div class="card-footer">
                 <div class="col mt-2">
-                    <button style="width:100%;" id="create" class="btn btn-primary">Cadastrar</button>
+                    <button style="width:100%;" id="create" class="float-end btn btn-primary">Cadastrar</button>
                 </div>
             </div>
         </div>

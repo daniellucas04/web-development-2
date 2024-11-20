@@ -15,7 +15,7 @@ include 'api/database/connection.php';
 				<li class="nav-item"><a href="/" class="btn btn-outline-primary">Página inicial</a></li>	
 			</ul>
 			<?php if (!empty($_SESSION) AND isset($_SESSION['username'])): ?>
-				<a class="btn btn-danger" href="sair.php">Sair</a>
+				<a class="btn btn-danger" href="/sair.php">Sair</a>
 			<?php endif; ?>
 		</div>
 	</div>

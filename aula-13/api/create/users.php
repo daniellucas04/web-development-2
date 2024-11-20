@@ -8,9 +8,11 @@ $table = 'users';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
 
+    // Validações
     if (empty($data['username'])) { $msg .= "O campo <strong>Usuário</strong> é obrigatório.<br>"; $error = true; }
-    if (empty($data['email'])) { $msg .= "O campo <strong>E-mail</strong>.<br>"; $error = true; }
-    if (!empty($data['email'])) {
+    if (empty($data['email'])) { 
+        $msg .= "O campo <strong>E-mail</strong>.<br>"; $error = true; 
+    } else {
         $sql = "SELECT id FROM users WHERE email = :email";
         $select = $database->prepare($sql);
         $select->execute(['email' => $data['email']]);

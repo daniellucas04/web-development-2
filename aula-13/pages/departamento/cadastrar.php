@@ -15,7 +15,7 @@
             </div>
             <div class="card-footer">
                 <div class="col mt-2">
-                    <button id="create" class="btn btn-primary">Cadastrar</button>
+                    <button id="create" class="float-end btn btn-primary">Cadastrar</button>
                 </div>
             </div>
         </div>
