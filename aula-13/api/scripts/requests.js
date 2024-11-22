@@ -1,9 +1,15 @@
 window.onload = function() {
     let createButton = document.getElementById('create');
+    if (createButton) {
+        createButton.addEventListener('click', () => {
+            create();
+        });
+    }
 
-    createButton.addEventListener('click', () => {
-        create();
-    });
+    let readElement = document.getElementById('read');
+    if (readElement) {
+        read();
+    }
 }
 
 function create() {
@@ -47,4 +53,23 @@ function showResult(data) {
     }
     
     divMessage.innerHTML = data.message;
+}
+
+function read () {
+    fetch(`/api/read/requests.php`, {
+        headers: {
+            'Content-Type': 'text/html'
+        },
+        method: 'GET',
+    })
+    .then(response => response.text())
+    .then((data) => {
+        showTable(data);
+    });
+}
+
+function showTable(data) {
+    let divTable = document.getElementById('read');
+
+    divTable.innerHTML += data;
 }

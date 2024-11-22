@@ -66,7 +66,7 @@ CREATE TABLE `requests` (
   CONSTRAINT `requests_ibfk_1` FOREIGN KEY (`id_department`) REFERENCES `departments` (`id`),
   CONSTRAINT `requests_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`),
   CONSTRAINT `requests_ibfk_3` FOREIGN KEY (`id_technician`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
