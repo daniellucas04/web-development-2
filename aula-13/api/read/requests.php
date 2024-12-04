@@ -26,11 +26,11 @@
                     <?php 
                     $priority = '';
                     $badgeClass = '';
-                    switch($row['priority']) {
-                        case 'L': $priority = 'Baixa';    $badgeClass = 'text-bg-secondary';  break;
-                        case 'M': $priority = 'Média';    $badgeClass = 'text-bg-info';    break;
-                        case 'H': $priority = 'Alta';     $badgeClass = 'text-bg-warning';    break;
-                        case 'U': $priority = 'Urgente';  $badgeClass = 'text-bg-danger';     break;
+                    switch ($row['priority']) {
+                        case 'L': $priority = 'Baixa';    $badgeClass = 'text-bg-secondary';    break;
+                        case 'M': $priority = 'Média';    $badgeClass = 'text-bg-info';         break;
+                        case 'H': $priority = 'Alta';     $badgeClass = 'text-bg-warning';      break;
+                        case 'U': $priority = 'Urgente';  $badgeClass = 'text-bg-danger';       break;
                     }
 
                     $limitDate = new DateTime($row['limit_date']);
