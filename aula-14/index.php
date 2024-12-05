@@ -13,6 +13,7 @@
     <div class="wrapper">
         <?php 
         include "pages/navbar.php";
+        include "api/database/connection.php";
     
         if (!isset($_SESSION['username']) OR empty($_SESSION)) {
             include "pages/login.php";

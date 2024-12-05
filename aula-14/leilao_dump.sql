@@ -15,8 +15,39 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE DATABSE IF NOT EXISTS `leilao`;
+CREATE DATABASE IF NOT EXISTS `leilao`;
 USE `leilao`;
+
+--
+-- Table structure for table `bids`
+--
+
+DROP TABLE IF EXISTS `bids`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bids` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_item` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `bid_price` decimal(10,2) NOT NULL,
+  `bid_timestamp` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `id_item` (`id_item`),
+  KEY `id_user` (`id_user`),
+  CONSTRAINT `bids_ibfk_1` FOREIGN KEY (`id_item`) REFERENCES `items` (`id`),
+  CONSTRAINT `bids_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bids`
+--
+
+LOCK TABLES `bids` WRITE;
+/*!40000 ALTER TABLE `bids` DISABLE KEYS */;
+INSERT INTO `bids` VALUES (8,7,2,21.00,'2024-12-04 21:48:02');
+/*!40000 ALTER TABLE `bids` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `items`
@@ -32,10 +63,13 @@ CREATE TABLE `items` (
   `minimum_price` decimal(10,2) NOT NULL,
   `status` enum('T','F') NOT NULL DEFAULT 'T',
   `winner` int(11) DEFAULT NULL,
+  `id_auctioneer` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `winner` (`winner`),
-  CONSTRAINT `items_ibfk_1` FOREIGN KEY (`winner`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `id_auctioneer` (`id_auctioneer`),
+  CONSTRAINT `items_ibfk_1` FOREIGN KEY (`winner`) REFERENCES `users` (`id`),
+  CONSTRAINT `items_ibfk_2` FOREIGN KEY (`id_auctioneer`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +78,7 @@ CREATE TABLE `items` (
 
 LOCK TABLES `items` WRITE;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
-INSERT INTO `items` VALUES (5,'Caixa','oi7c9.png',10.00,'T',NULL);
+INSERT INTO `items` VALUES (6,'Caixa de papelão','j1i69.png',10.00,'F',2,1),(7,'Caixa de papelão 2','iajfw.png',20.00,'F',2,1);
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,7 +96,7 @@ CREATE TABLE `users` (
   `password` mediumtext NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,7 +105,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Admin','admin@leilao.com','$2y$10$6u83vPM2U8ZsfbcYZGvjoO6VqwGDHTJBv1OhV99wvLggkeLq8emDW');
+INSERT INTO `users` VALUES (1,'Admin','admin@leilao.com','$2y$10$6u83vPM2U8ZsfbcYZGvjoO6VqwGDHTJBv1OhV99wvLggkeLq8emDW'),(2,'mauro','mauro@email.com','$2y$10$ekvi5TH4ixw.LIlzypG3ZuSk2CS1ZQ5OKrTqgQEXl.BoD/.B0EQ/m');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -84,4 +118,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-03 22:13:31
+-- Dump completed on 2024-12-04 21:52:30

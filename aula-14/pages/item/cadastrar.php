@@ -22,6 +22,9 @@
                             <input type="text" class="form-control" placeholder="Preço mínimo" name="minimum_price" required>
                         </div>
                     </div>
+                    <div>
+                        <input type="hidden" name="id_auctioneer" value="<?= $_SESSION['id_user']; ?>">
+                    </div>
                 </div>
             </div>
             <div class="card-footer">

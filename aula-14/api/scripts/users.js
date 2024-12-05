@@ -19,13 +19,11 @@ function create() {
     let username = document.getElementsByName('username')[0].value;
     let email = document.getElementsByName('email')[0].value;
     let password = document.getElementsByName('password')[0].value;
-    let isTech = document.getElementsByName('tech')[0].checked;
 
     data = {
         username,
         email,
         password,
-        is_tech: isTech
     }
 
     fetch(`/api/create/users.php`, {

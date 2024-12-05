@@ -13,7 +13,8 @@
         <div class="card-body">
             <ul class="list-group">
                 <li class="list-group-item"><a href="/usuario/listar">Listar usuários</a></li>
-                <li class="list-group-item"><a href="/item/listar">Listar itens</a></li>
+                <li class="list-group-item"><a href="/item/listar">Listar todos os itens</a></li>
+                <li class="list-group-item"><a href="/item/meus-itens">Listar os meus itens</a></li>
             </ul>
         </div>
     </div>
