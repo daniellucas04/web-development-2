@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($image)) { $msg .= "O campo <strong>Imagem</strong> é obrigatório.<br>"; $error = true; }
     if ($image['error'] != 0) { $msg .= "Ocorreu um erro com a <strong>Imagem</strong>."; $error = true; }
     if (empty($data['minimum_price'])) { $msg .= "O campo <strong>Preço mínimo</strong> é obrigatório.<br>"; $error = true; }
-    
 
     // Prepara os dados para inserção
     $data['minimum_price'] = str_replace(',', '.', $data['minimum_price']);
@@ -23,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $sql = "INSERT INTO $table (name, image, minimum_price, id_auctioneer) VALUES (:name, :image, :minimum_price, :id_auctioneer)";
             $insert = $database->prepare($sql);
-            
+
             if ($insert->execute(['name' => $data['name'], 'image' => $image['name'], 'minimum_price' => $data['minimum_price'], 'id_auctioneer' => $data['id_auctioneer']])) {
                 $lastId = $database->lastInsertId();
                 $pathToSaveFile = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $lastId . DIRECTORY_SEPARATOR;

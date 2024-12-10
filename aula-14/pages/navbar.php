@@ -11,12 +11,15 @@ include 'api/database/connection.php';
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
-			<ul class="navbar-nav d-flex align-items-center gap-3">
+			<ul class="navbar-nav gap-4">
 				<li class="nav-item"><a href="/" class="btn btn-outline-primary">Página inicial</a></li>
 			</ul>
-			<?php if (!empty($_SESSION) AND isset($_SESSION['username'])): ?>
-				<a class="btn btn-danger" href="/sair.php">Sair</a>
-			<?php endif; ?>
+			<div class="d-flex align-items-center gap-4">
+				<a href="/item/vencidos" class="btn btn-outline-success btn-sm"><ion-icon style="font-size:24px" name="bag-check-outline"></ion-icon></a>
+				<?php if (!empty($_SESSION) AND isset($_SESSION['username'])): ?>
+					<a class="btn btn-danger" href="/sair.php">Sair</a>
+				<?php endif; ?>
+			</div>
 		</div>
 	</div>
 </nav>

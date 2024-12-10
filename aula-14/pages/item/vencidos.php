@@ -2,16 +2,15 @@
 <div class="container d-flex justify-content-center mt-5">
     <div style="width: 80%;">
         <div id="result"></div>
-        <h3>Todos os meus itens</h3>
+        <h3 class="mb-4">Itens vencidos</h3>
         <?php
-        $sqlItems = "SELECT id, name, minimum_price, image, status, winner FROM items WHERE id_auctioneer = :id ORDER BY status";
+        $sqlItems = "SELECT id, name, minimum_price, image, status, winner FROM items WHERE winner = :id";
         $selectItems = $database->prepare($sqlItems);
         $selectItems->execute(['id' => $idUser]);
         $counter = 0;
 
         if ($selectItems->rowCount() > 0):
         ?>
-
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
@@ -40,18 +39,15 @@
                         <td colspan="5">
                             <div class="d-flex gap-5 align-items-center justify-content-evenly">
                                 <?php 
-                                $sqlBids = "SELECT b.id_user, b.bid_price, u.username FROM bids AS b INNER JOIN users AS u ON b.id_user = u.id WHERE id_item = :id ORDER BY bid_timestamp DESC LIMIT 4";
+                                $sqlBids = "SELECT b.bid_price FROM bids AS b INNER JOIN users AS u ON b.id_user = u.id WHERE id_item = :id ORDER BY bid_timestamp DESC LIMIT 4";
                                 $selectBids = $database->prepare($sqlBids);
                                 $selectBids->execute(['id' => $itemRow['id']]);
                                 ?>
                                 <?php ?>
-                                <div style="width:12rem;">
-                                    <ul class="list-group">
-                                        <?php while ($bidRow = $selectBids->fetch(PDO::FETCH_ASSOC)): ?>
-                                            <li class="list-group-item <?= ($itemRow['winner'] == $bidRow['id_user']) ? 'active' : null; ?>"><?= ucfirst($bidRow['username']) ?> - <strong>R$<?= str_replace('.', ',', $bidRow['bid_price']) ?></strong></li>
-                                        <?php endwhile ?>
-                                    </ul>
-                                    <h5 class="text-center mt-1"><?= ($itemRow['status'] == 'T') ? 'Últimos lances' : 'Vencedor'; ?></h5>
+                                <div style="width:14rem;">
+                                    <?php while ($bidRow = $selectBids->fetch(PDO::FETCH_ASSOC)): ?>
+                                        <h4 class="text-center">Você comprou este item por <br> R$<?= str_replace('.', ',', $bidRow['bid_price']); ?></h4>
+                                    <?php endwhile ?>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-center flex-column gap-2">
                                     <div>
@@ -84,7 +80,7 @@
             </tfoot>
         </table>
         <?php else: ?>
-            <span class="alert alert-info d-flex justify-content-center"><strong>Oooops! Você não possui itens cadastrados.</strong></span>
+            <span class="alert alert-info d-flex justify-content-center"><strong>Oooops! Não foram encontrados itens vencidos por você.</strong></span>
         <?php endif; ?>
     </div>
 </div>

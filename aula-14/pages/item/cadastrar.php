@@ -13,7 +13,7 @@
                     </div>
                     <div class="col-12 mt-2">
                         <div class="input-group mb-3">
-                            <input type="file" accept=".png, .jpg" class="form-control" id="image" name="image" required>
+                            <input type="file" accept=".png, .jpg, .jfif" class="form-control" id="image" name="image" required>
                         </div>
                     </div>
                     <div class="col-12 mt-2">

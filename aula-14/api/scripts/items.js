@@ -128,4 +128,6 @@ function finishBid() {
     .then((data) => {
         showResult(data);
     })
+
+    location.reload();
 }
